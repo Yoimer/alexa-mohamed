@@ -8,9 +8,10 @@
 /****************************************
  * Define Constants
  ****************************************/
-#define TOKEN "A1E-kVgDgXsJGczuXn5745CwVSKFS7UqBnXBzqHzARChQzBlipec3vZbo7kx" // Your Ubidots TOKEN
-#define WIFINAME "SKY7D85E" //Your SSID
-#define WIFIPASS "8121985" // Your Wifi Pass
+#define TOKEN "A1E-6TwRB1I2osbXqKcuJYG3WduSoQG5oI" // Yoimer's Ubidots TOKEN
+//#define TOKEN "A1E-kVgDgXsJGczuXn5745CwVSKFS7UqBnXBzqHzARChQzBlipec3vZbo7kx" // Mohamed's Ubidots TOKEN
+#define WIFINAME "Casa" //Your SSID
+#define WIFIPASS "remioy2006202" // Your Wifi Pass
 #define DHTTYPE DHT11   // DHT 11
 // global values for humidity and temperature
 float h = -1.0;
@@ -62,17 +63,25 @@ void setup() {
 
 void loop() {
   // read temperature and humidity
-  readTemperatureAndHumidity();
+  // uncoment when testing real code
+  //readTemperatureAndHumidity();
+
+  ///these are random numbers, please coment them when testing
+  // real code
+  h += 1.25;
+  t += 2.78;
+
   // put your main code here, to run repeatedly:
   if(!client.connected()){
       client.reconnect();
       }
   
   // Publish values to 2 different data sources
-  client.add("stuff", h); //Insert your variable Labels and the value to be sent
-  client.ubidotsPublish("source1");
-  client.add("stuff", t);
-  client.add("more-stuff", 120.2);
-  client.ubidotsPublish("source2");
+  client.add("Humidity", h); //Insert your variable Labels and the value to be sent
+  client.ubidotsPublish("Humidity");
+  client.add("Temperature", t);
+  client.ubidotsPublish("Temperature");
   client.loop();
+  //waits for 15 seconds
+  delay(15000);
   }
