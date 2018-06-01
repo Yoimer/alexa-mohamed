@@ -8,7 +8,11 @@
 /****************************************
  * Define Constants
  ****************************************/
-#define TOKEN "A1E-6TwRB1I2osbXqKcuJYG3WduSoQG5oI" // Yoimer's Ubidots TOKEN
+
+// Yoimer's Alexa TOKEN (has to be created in order to be a fixed one)
+// the ones from default in web site, will expire in 6 hours if not used.
+//https://app.ubidots.com/userdata/api/
+#define TOKEN "A1E-Z4kgHL1BHoC5rgQ5sH0Wcey1H8JRf1"
 //#define TOKEN "A1E-kVgDgXsJGczuXn5745CwVSKFS7UqBnXBzqHzARChQzBlipec3vZbo7kx" // Mohamed's Ubidots TOKEN
 #define WIFINAME "Casa" //Your SSID
 #define WIFIPASS "remioy2006202" // Your Wifi Pass
