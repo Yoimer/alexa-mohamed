@@ -1,2 +1,21 @@
 http://things.ubidots.com/api/v1.6/devices/humidity/humidity/values?token=A1E-Z4kgHL1BHoC5rgQ5sH0Wcey1H8JRf1
 http://things.ubidots.com/api/v1.6/devices/temperature/temperature/values?token=A1E-Z4kgHL1BHoC5rgQ5sH0Wcey1H8JRf1
+
+import requests
+import json
+
+print 'Connecting...'
+
+time.sleep(2);
+
+sess = requests.Session()
+
+url = 'http://things.ubidots.com/api/v1.6/devices/humidity/humidity/values?token=A1E-Z4kgHL1BHoC5rgQ5sH0Wcey1H8JRf1'
+
+data = sess.get(url)
+
+# print data.content
+
+d = json.loads(data.content)
+print d['results'][0]['value']
+print type(d['results'][0]['value'])
