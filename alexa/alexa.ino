@@ -80,12 +80,12 @@ void loop() {
       client.reconnect();
       }
   
-  // Publish values to 2 different data sources
+  // Publish values to one data source
   client.add("Humidity", h); //Insert your variable Labels and the value to be sent
-  client.ubidotsPublish("Humidity");
   client.add("Temperature", t);
-  client.ubidotsPublish("Temperature");
+  client.ubidotsPublish("alexa");  
   client.loop();
   //waits for 15 seconds
   delay(15000);
   }
+
