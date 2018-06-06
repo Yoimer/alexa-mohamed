@@ -12,7 +12,7 @@
 // Yoimer's Alexa TOKEN (has to be created in order to be a fixed one)
 // the ones from default in web site, will expire in 6 hours if not used.
 //https://app.ubidots.com/userdata/api/
-#define TOKEN "A1E-Z4kgHL1BHoC5rgQ5sH0Wcey1H8JRf1"
+#define TOKEN "A1E-nJFpIeInVtXSpIrqa8OZ4pktloFlnl"
 //#define TOKEN "A1E-kVgDgXsJGczuXn5745CwVSKFS7UqBnXBzqHzARChQzBlipec3vZbo7kx" // Mohamed's Ubidots TOKEN
 #define WIFINAME "Casa" //Your SSID
 #define WIFIPASS "remioy2006202" // Your Wifi Pass
@@ -29,20 +29,42 @@ DHT dht(dht_dpin, DHTTYPE);
  ****************************************/
 
 void callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] ");
+ Serial.print("Message arrived [");
+ Serial.print(topic);
+ Serial.print("] ");
+ 
   for (int i=0;i<length;i++) {
-    Serial.print((char)payload[i]);
+   Serial.print((char)payload[i]);
   }
+
+  Serial.println();
+
+//****topic = /v1.6/devices/alexa/redled/lv
+//****topic = /v1.6/devices/alexa/greenled/lv
+
+if (topic[20]=='g')  // check if the value is coming from greenled button
+  {
   if ((char)payload[0]=='1'){
-    digitalWrite(16, LOW);
+    digitalWrite(5, HIGH);  // swtich on the green led
   }
   else{
-    digitalWrite(16, HIGH);
+    digitalWrite(5, LOW);  // switch off the green led
   }
-  Serial.println();
+  //Serial.println();
 }
+
+if (topic[20]=='r')  // check if the value is coming from redled button
+  {
+    if ((char)payload[0]=='1'){
+      digitalWrite(4, HIGH);  // switch on the red led
+    }
+    else{
+      digitalWrite(4, LOW);  // switch off the red led
+    }
+  //Serial.println();
+  }
+}
+
 
 ////readTemperatureAndHumidity
 float readTemperatureAndHumidity() {
@@ -68,8 +90,10 @@ void setup() {
   client.wifiConnection(WIFINAME, WIFIPASS);
   dht.begin();
   client.begin(callback);
-  pinMode(16, OUTPUT);
-  client.ubidotsSubscribe("alexa","button"); //Insert the dataSource and Variable's Labels
+  pinMode(5, OUTPUT); // green led output pin (GOIO5=D1)
+  pinMode(4, OUTPUT); // red led output pin (GPIO4=D2)
+  client.ubidotsSubscribe("alexa","redled"); //Insert the dataSource and Variable's Labels
+  client.ubidotsSubscribe("alexa","greenled"); //Insert the dataSource and Variable's Labels
   }
 
 void loop() {
@@ -86,12 +110,14 @@ void loop() {
 
   if(!client.connected()){
       client.reconnect();
-      client.ubidotsSubscribe("alexa","button"); //Insert the dataSource and Variable's Labels
-      }
+      client.ubidotsSubscribe("alexa","greenled"); //Insert the dataSource and Variable's Labels
+      client.ubidotsSubscribe("alexa","redled"); //Insert the dataSource and Variable's Labels
+  }
 
   client.add("Humidity", h); //Insert your variable Labels and the value to be sent
   client.add("Temperature", t);
   client.ubidotsPublish("alexa"); 
-
+  // delay(15000);
   client.loop();
-  }
+}
+
